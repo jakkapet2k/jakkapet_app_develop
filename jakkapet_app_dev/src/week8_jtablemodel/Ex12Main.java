@@ -20,6 +20,9 @@ public class Ex12Main {
 
 	}
 
+	/**
+	 * @param car
+	 */
 	public void editCar(Ex12Car car) {
 		
 		System.out.println("Edit car");

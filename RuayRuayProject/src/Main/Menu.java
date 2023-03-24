@@ -11,6 +11,22 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import Customer.CustomerAdd;
+import Customer.CustomerDelete;
+import Customer.CustomerEdit;
+import Goods.GoodsAdd;
+import Goods.GoodsDelete;
+import Goods.GoodsEdit;
+import Procurement.CheckOrder;
+import Procurement.OrderReceipt;
+import Supplier.SupplierAdd;
+import Supplier.SupplierDelete;
+import Supplier.SupplierEdit;
+import javax.swing.JButton;
+import java.awt.Color;
+import java.awt.SystemColor;
+import java.awt.Insets;
+
 
 
 
@@ -18,11 +34,13 @@ import javax.swing.JPanel;
 public class Menu extends JFrame  implements ActionListener {
 
 	
-	public final static int FRAME_WIDTH = 500;
-	final public static int FRAME_HEIGHT = 300;
+	public final static int FRAME_WIDTH = 900;
+	final public static int FRAME_HEIGHT = 400;
 	
 	
 	private static final String mainString = "Main Menu";
+	private static final String HOME_STR = "Home";
+	
 	
 	private static final String GoodsString = "Goods";
 	private static final String SupplierString = "Supplier";
@@ -31,44 +49,74 @@ public class Menu extends JFrame  implements ActionListener {
 	
 	private static final String EXIT_STR = "Exit";
 	
-	private static final String Goods_ADD_STR = "ADD";
-	private static final String Goods_EDIT_STR = "Edit";
-	private static final String Goods_DELETE_STR = "Delete";
+	private static final String Goods_ADD_STR = "ADD Goods";
+	private static final String Goods_EDIT_STR = "Edit Goods";
+	private static final String Goods_DELETE_STR = "Delete Goods";
 	
-	private static final String Supplier_ADD_STR = "ADD";
-	private static final String Supplier_EDIT_STR = "Edit";
-	private static final String Supplier_DELETE_STR = "Delete";
+	private static final String Supplier_ADD_STR = "ADD Supplier";
+	private static final String Supplier_EDIT_STR = "Edit Supplier";
+	private static final String Supplier_DELETE_STR = "Delete Supplier";
 	
-	private static final String Procurement_ADD_STR = "ADD";
-	private static final String Procurement_EDIT_STR = "Edit";
-	private static final String Procurement_DELETE_STR = "Delete";
 	
-	private static final String Customer_ADD_STR = "ADD";
-	private static final String Customer_EDIT_STR = "Edit";
-	private static final String Customer_DELETE_STR = "Delete";
+	
+	private static final String Procurement_ORDER_STR = "Order ";
+	private static final String Procurement_CKORDER_STR = "Check Order ";
+	
+	
+	private static final String Customer_ADD_STR = "ADD Customer";
+	private static final String Customer_EDIT_STR = "Edit Customer";
+	private static final String Customer_DELETE_STR = "Delete Customer";
+	
 	
 	Main mainmenu;
-	FormDelete formdelete;
-	FormAdd formadd;
-	FormEdit formedit;
 	JPanel mainPanel;
+	
+	Home home;
+	
+	GoodsAdd goodsadd;
+	GoodsDelete goodsdelete;
+	GoodsEdit goodsedit;
+	
+	SupplierAdd supplieradd;
+	SupplierDelete supplierdelete;
+	SupplierEdit supplieredit;
+	
+	CustomerAdd customeradd;
+	CustomerDelete customerdelete;
+	CustomerEdit customeredit;
+
+	OrderReceipt order;
+	CheckOrder ckorder;
 	
 	public Menu(Main main) {
 		super("Ruay Ruay");
+
 		
-		this.mainmenu=mainmenu;
 		
-		
-		setSize(FRAME_WIDTH, FRAME_HEIGHT);
+		setSize(920, 464);
 		Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((screenDim.width-FRAME_WIDTH)/2, (screenDim.height-FRAME_HEIGHT)/2);
 		
-		  JMenu menu, submenu;  
-          JMenuItem i1, i2, i3, i4, i5, i6,i7,i8,i9,i10,i11,i12;  
-          JMenuBar mb=new JMenuBar();  
+		  JMenu  menu, submenu;
+          JMenuItem i0,i1, i2, i3, i4, i5, i6,i7,i8,i9,i10,i11,i12 ;  
+          JMenuBar mb=new JMenuBar();
+          mb.setEnabled(false);
+          mb.setBorderPainted(false);
+          mb.setBackground(Color.white);
+          
+
+         
           
           
-          menu=new JMenu("Menu");  
+
+          
+         
+		
+          setJMenuBar(mb);  
+          
+          menu = new JMenu("Menu");
+          
+
           submenu=new JMenu(GoodsString);  
           i1=new JMenuItem(Goods_ADD_STR);  
           i2=new JMenuItem(Goods_EDIT_STR);  
@@ -90,12 +138,10 @@ public class Menu extends JFrame  implements ActionListener {
           
           
           submenu=new JMenu(ProcurementString);  
-          i7=new JMenuItem(Procurement_ADD_STR);    
-          i8=new JMenuItem(Procurement_EDIT_STR);  
-          i9=new JMenuItem(Procurement_DELETE_STR);    
+          i7=new JMenuItem(Procurement_ORDER_STR );    
+          i8=new JMenuItem(Procurement_CKORDER_STR );  
           submenu.add(i7); 
           submenu.add(i8); 
-          submenu.add(i9); 
           menu.add(submenu);
           
           
@@ -107,8 +153,6 @@ public class Menu extends JFrame  implements ActionListener {
           submenu.add(i11); 
           submenu.add(i12); 
           menu.add(submenu);
-
-          
           i1.addActionListener(this);
           i2.addActionListener(this); 
           i3.addActionListener(this); 
@@ -117,39 +161,68 @@ public class Menu extends JFrame  implements ActionListener {
           i6.addActionListener(this);
           i7.addActionListener(this); 
           i8.addActionListener(this); 
-          i9.addActionListener(this); 
           i10.addActionListener(this);
           i11.addActionListener(this);
           i12.addActionListener(this);
-           
-          mb.add(menu);  
-		
-          setJMenuBar(mb);  
-
           
-		formadd = new FormAdd(mainmenu);
-		formdelete = new FormDelete(mainmenu);
-		formedit= new FormEdit(mainmenu);
+                    mb.add(menu);
+
+        
+          home = new Home (mainmenu);
+          
+          goodsadd = new GoodsAdd(mainmenu);
+          goodsdelete = new GoodsDelete(mainmenu);
+          goodsedit= new GoodsEdit(mainmenu);
+          
+          supplieradd = new SupplierAdd(mainmenu);
+          supplierdelete = new SupplierDelete(mainmenu);
+          supplieredit = new SupplierEdit(mainmenu);
+          
+          customeradd = new CustomerAdd (mainmenu); 
+      	  customerdelete = new CustomerDelete (mainmenu); 
+      	  customeredit = new CustomerEdit (mainmenu); 
+      	  order = new OrderReceipt (mainmenu); 
+      	  ckorder = new CheckOrder (mainmenu); 
 		
-		
-		
+      	  
+      	  
 		mainPanel = new JPanel(new CardLayout());
 		
-		mainPanel.add(formadd, Goods_ADD_STR);
-		mainPanel.add(formdelete, Goods_DELETE_STR);
-		mainPanel.add(formedit, Goods_EDIT_STR);
+		mainPanel.add(home, HOME_STR);
+		
+		mainPanel.add(goodsadd, Goods_ADD_STR);
+		mainPanel.add(goodsdelete, Goods_DELETE_STR);
+		mainPanel.add(goodsedit, Goods_EDIT_STR);
+		
+		mainPanel.add(supplieradd, Supplier_ADD_STR);
+		mainPanel.add(supplierdelete, Supplier_DELETE_STR);
+		mainPanel.add(supplieredit, Supplier_EDIT_STR);
+		
+		mainPanel.add(customeradd, Customer_ADD_STR);
+		mainPanel.add(customerdelete, Customer_DELETE_STR);
+		mainPanel.add(customeredit, Customer_EDIT_STR);
+		
+		mainPanel.add(order, Procurement_ORDER_STR);
+		mainPanel.add(ckorder, Procurement_CKORDER_STR);
 		
 		
-		add(mainPanel);
+		getContentPane().add(mainPanel);
 
 	}
 	
+
+
 	public void actionPerformed(ActionEvent evt) {
 		String command = evt.getActionCommand();
 		System.out.println("command:" + command);
 		Object source = evt.getSource();
 		System.out.println("source:" + source.toString());
-		if(command.equals(Goods_ADD_STR)) {
+		if(command.equals(HOME_STR)) {
+			CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+			cardLayout.show(mainPanel, HOME_STR);
+			
+			//-----------------Goods---------------------//
+		} else if(command.equals(Goods_ADD_STR)) {
 			CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
 			cardLayout.show(mainPanel, Goods_ADD_STR);
 		} else if(command.equals(Goods_DELETE_STR)) {
@@ -158,9 +231,45 @@ public class Menu extends JFrame  implements ActionListener {
 		}else if(command.equals(Goods_EDIT_STR)) {
 			CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
 			cardLayout.show(mainPanel, Goods_EDIT_STR);
-		} else if(command.equals(EXIT_STR)) {
+			
+			//------------------Supplier--------------------//
+			
+		} else if(command.equals(Supplier_ADD_STR)) {
+			CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+			cardLayout.show(mainPanel, Supplier_ADD_STR);
+		}else if(command.equals(Supplier_DELETE_STR)) {
+			CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+			cardLayout.show(mainPanel, Supplier_DELETE_STR);
+		}else if(command.equals(Supplier_EDIT_STR)) {
+			CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+			cardLayout.show(mainPanel, Supplier_EDIT_STR);
+		}else if(command.equals(Customer_ADD_STR)) {
+			
+			//------------------Customer--------------------//
+			
+			
+			CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+			cardLayout.show(mainPanel, Customer_ADD_STR);
+		}else if(command.equals(Customer_DELETE_STR)) {
+			CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+			cardLayout.show(mainPanel, Customer_DELETE_STR);
+		}else if(command.equals(Customer_EDIT_STR)) {
+			CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+			cardLayout.show(mainPanel, Customer_EDIT_STR);
+			
+			//----------------Procurement----------------------//
+		}else if(command.equals(Procurement_ORDER_STR)) {
+			CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+			cardLayout.show(mainPanel, Procurement_ORDER_STR);
+		}else if(command.equals(Procurement_CKORDER_STR)) {
+			CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+			cardLayout.show(mainPanel, Procurement_CKORDER_STR);
+			
+			//----------------EXIT----------------------//
+			
+			
+		}else if(command.equals(EXIT_STR)) {
 			System.exit(0);
 		}
 	}
-	
 }
