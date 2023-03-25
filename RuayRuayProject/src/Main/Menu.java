@@ -15,6 +15,7 @@ import Customer.CustomerAdd;
 import Customer.CustomerDelete;
 import Customer.CustomerEdit;
 import Goods.GoodsAdd;
+import Goods.GoodsDAO;
 import Goods.GoodsDelete;
 import Goods.GoodsEdit;
 import Procurement.CheckOrder;
@@ -39,7 +40,7 @@ public class Menu extends JFrame  implements ActionListener {
 	
 	
 	private static final String mainString = "Main Menu";
-	private static final String HOME_STR = "Home";
+	static final String HOME_STR = "Home";
 	
 	
 	private static final String GoodsString = "Goods";
@@ -66,6 +67,19 @@ public class Menu extends JFrame  implements ActionListener {
 	private static final String Customer_ADD_STR = "ADD Customer";
 	private static final String Customer_EDIT_STR = "Edit Customer";
 	private static final String Customer_DELETE_STR = "Delete Customer";
+	
+	
+	private static final String CATLV1_ADD_STR = "ADD Catagory Lv.1";
+	private static final String CATLV1_EDIT_STR = "Edit Catagory Lv.1";
+	private static final String CATLV1_DELETE_STR = "Delete Catagory Lv.1";
+	
+	private static final String CATLV2_ADD_STR = "ADD Catagory Lv.2";
+	private static final String CATLV2_EDIT_STR = "Edit Catagory Lv.2";
+	private static final String CATLV2_DELETE_STR = "Delete Catagory Lv.2";
+	
+	private static final String CATLV3_ADD_STR = "ADD Catagory Lv.3";
+	private static final String CATLV3_EDIT_STR = "Edit Catagory Lv.3";
+	private static final String CATLV3_DELETE_STR = "Delete Catagory Lv.3";
 	
 	
 	Main mainmenu;
@@ -97,62 +111,86 @@ public class Menu extends JFrame  implements ActionListener {
 		Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((screenDim.width-FRAME_WIDTH)/2, (screenDim.height-FRAME_HEIGHT)/2);
 		
-		  JMenu  menu, submenu;
-          JMenuItem i0,i1, i2, i3, i4, i5, i6,i7,i8,i9,i10,i11,i12 ;  
+		  JMenu  file,menu, submenu ,goods,clv1,clv2,clv3;
+          JMenuItem ihome,i1, i2, i3, i4, i5, i6,i7,i8,i9,i10,i11,i12,i13,i14,i15,i16,i17,i18,i19,i20 ,iexit;  
           JMenuBar mb=new JMenuBar();
-          mb.setEnabled(false);
-          mb.setBorderPainted(false);
-          mb.setBackground(Color.white);
-          
-
-         
-          
-          
-
-          
-         
+ 
 		
           setJMenuBar(mb);  
+          file = new JMenu("File");
+          ihome = new JMenuItem(HOME_STR);
+          iexit = new JMenuItem(EXIT_STR);
+          file.add(ihome);
+          file.add(iexit);
           
-          menu = new JMenu("Menu");
           
-
+          menu = new JMenu("CRUD");
+          
+          
+          
+          goods = new JMenu("Goods");
+          clv1 = new JMenu("Catagory Lv.1");
+          clv2 = new JMenu("Catagory Lv.2");
+          clv3 = new JMenu("Catagory Lv.3");
           submenu=new JMenu(GoodsString);  
           i1=new JMenuItem(Goods_ADD_STR);  
           i2=new JMenuItem(Goods_EDIT_STR);  
-          i3=new JMenuItem(Goods_DELETE_STR);  
-          submenu.add(i1); 
-          submenu.add(i2); 
-          submenu.add(i3); 
+          i3=new JMenuItem(Goods_DELETE_STR);    
+          i4=new JMenuItem(CATLV1_ADD_STR);  
+          i5=new JMenuItem(CATLV1_EDIT_STR);  
+          i6=new JMenuItem(CATLV1_DELETE_STR); 
+          i7=new JMenuItem(CATLV2_ADD_STR);  
+          i8=new JMenuItem(CATLV2_EDIT_STR);  
+          i9=new JMenuItem(CATLV2_DELETE_STR);
+          i10=new JMenuItem(CATLV3_ADD_STR);  
+          i11=new JMenuItem(CATLV3_EDIT_STR);  
+          i12=new JMenuItem(CATLV3_DELETE_STR); 
+          submenu.add(goods);        
+          goods.add(i1); 
+          goods.add(i2); 
+          goods.add(i3); 
+          submenu.add(clv1); 
+          clv1.add(i4); 
+          clv1.add(i5); 
+          clv1.add(i6); 
+          submenu.add(clv2); 
+          clv2.add(i7); 
+          clv2.add(i8); 
+          clv2.add(i9); 
+          submenu.add(clv3); 
+          clv3.add(i10); 
+          clv3.add(i11); 
+          clv3.add(i12); 
           menu.add(submenu);  
           
           
           submenu=new JMenu(SupplierString);  
-          i4=new JMenuItem(Supplier_ADD_STR);   
-          i5=new JMenuItem(Supplier_EDIT_STR);  
-          i6=new JMenuItem(Supplier_DELETE_STR);  
-          submenu.add(i4); 
-          submenu.add(i5); 
-          submenu.add(i6); 
+          i13=new JMenuItem(Supplier_ADD_STR);   
+          i14=new JMenuItem(Supplier_EDIT_STR);  
+          i15=new JMenuItem(Supplier_DELETE_STR);  
+          submenu.add(i13); 
+          submenu.add(i14); 
+          submenu.add(i15); 
           menu.add(submenu);  
-          
-          
+        
           submenu=new JMenu(ProcurementString);  
-          i7=new JMenuItem(Procurement_ORDER_STR );    
-          i8=new JMenuItem(Procurement_CKORDER_STR );  
-          submenu.add(i7); 
-          submenu.add(i8); 
+          i16=new JMenuItem(Procurement_ORDER_STR );    
+          i17=new JMenuItem(Procurement_CKORDER_STR );  
+          submenu.add(i16); 
+          submenu.add(i17); 
           menu.add(submenu);
-          
-          
+        
           submenu=new JMenu(CustomerString);  
-          i10=new JMenuItem(Customer_ADD_STR);   
-          i11=new JMenuItem(Customer_EDIT_STR);
-          i12=new JMenuItem(Customer_DELETE_STR);    
-          submenu.add(i10); 
-          submenu.add(i11); 
-          submenu.add(i12); 
+          i18=new JMenuItem(Customer_ADD_STR);   
+          i19=new JMenuItem(Customer_EDIT_STR);
+          i20=new JMenuItem(Customer_DELETE_STR);    
+          submenu.add(i18); 
+          submenu.add(i19); 
+          submenu.add(i20); 
           menu.add(submenu);
+          
+          ihome.addActionListener(this);
+          iexit.addActionListener(this);
           i1.addActionListener(this);
           i2.addActionListener(this); 
           i3.addActionListener(this); 
@@ -161,10 +199,20 @@ public class Menu extends JFrame  implements ActionListener {
           i6.addActionListener(this);
           i7.addActionListener(this); 
           i8.addActionListener(this); 
+          i9.addActionListener(this); 
           i10.addActionListener(this);
           i11.addActionListener(this);
           i12.addActionListener(this);
+          i13.addActionListener(this); 
+          i14.addActionListener(this);
+          i15.addActionListener(this);
+          i16.addActionListener(this);
+          i17.addActionListener(this); 
+          i18.addActionListener(this);
+          i19.addActionListener(this); 
+          i20.addActionListener(this);
           
+          			mb.add(file);
                     mb.add(menu);
 
         

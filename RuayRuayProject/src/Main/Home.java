@@ -2,19 +2,33 @@ package Main;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.ResultSetMetaData;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Vector;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import java.awt.Font;
-import javax.swing.SwingConstants;
-import java.awt.ScrollPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
-public class Home extends JPanel {
-	private JTable table;
+import Goods.Goods;
+import Goods.GoodsDAO;
+
+public class Home extends JPanel implements ActionListener{
+	public static final String View_STR = "View Goods";
+	DefaultTableModel tableModel;
+	JTable table;
+	Main main;
+	Menu menu;
 	
-	public Home(Main main)  {
+	public Home(Main main)   {
 		
 		
 		
@@ -28,10 +42,58 @@ public class Home extends JPanel {
 		setPreferredSize(new Dimension(900,400));
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 76, 880, 313);
+		scrollPane.setBounds(34, 63, 833, 309);
 		add(scrollPane);
-		
 		table = new JTable();
 		scrollPane.setViewportView(table);
+
+		
+		String[] columnNames = {"ID", "Catagory", "Type", "Model", "Name", "Unit Price", "Stocks"};
+		tableModel = new DefaultTableModel(columnNames, 0);
+
+		
+		GoodsDAO.showTable(tableModel);
+		table.setModel(tableModel);
+
+		TableColumn column1 = table.getColumnModel().getColumn(0);
+		column1.setPreferredWidth(5);
+		column1 = table.getColumnModel().getColumn(1);
+		column1.setPreferredWidth(5);
+		column1 = table.getColumnModel().getColumn(2);
+		column1.setPreferredWidth(5);
+		column1 = table.getColumnModel().getColumn(3);
+		column1.setPreferredWidth(5);
+		column1 = table.getColumnModel().getColumn(4);
+		column1.setPreferredWidth(300);
+		column1 = table.getColumnModel().getColumn(5);
+		column1.setPreferredWidth(20);
+		column1 = table.getColumnModel().getColumn(6);
+		column1.setPreferredWidth(20);
+		
+	
+		
+		JButton btnViewGoods = new JButton(View_STR);
+		btnViewGoods.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnViewGoods.setForeground(new Color(0, 191, 255));
+		btnViewGoods.setBounds(34, 39, 123, 23);
+		add(btnViewGoods);
+		
+		btnViewGoods.addActionListener(this);
+
+		
+		
 	}
+	
+	
+	public void actionPerformed(ActionEvent evt) {
+		
+		String command = evt.getActionCommand();
+		if(command.equals(View_STR)) {
+			GoodsDAO.showTable(tableModel);
+			
+			
+	}
+		}
+
+	
 }

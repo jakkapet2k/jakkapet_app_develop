@@ -11,12 +11,14 @@ import java.awt.Font;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import javax.swing.JButton;
 
 public class GoodsDelete extends JPanel  {
 	private JTable table;
 	private JTextField idField;
-	
+	DefaultTableModel tableModel;
 	public GoodsDelete(Main main) {
 		
 		
@@ -33,6 +35,28 @@ public class GoodsDelete extends JPanel  {
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
+		
+		String[] columnNames = {"ID", "Catagory", "Type", "Model", "Name", "Unit Price", "Stocks"};
+		 tableModel = new DefaultTableModel(columnNames, 0);
+
+		
+		GoodsDAO.showTable(tableModel);
+		table.setModel(tableModel);
+
+		TableColumn column1 = table.getColumnModel().getColumn(0);
+		column1.setPreferredWidth(5);
+		column1 = table.getColumnModel().getColumn(1);
+		column1.setPreferredWidth(5);
+		column1 = table.getColumnModel().getColumn(2);
+		column1.setPreferredWidth(5);
+		column1 = table.getColumnModel().getColumn(3);
+		column1.setPreferredWidth(5);
+		column1 = table.getColumnModel().getColumn(4);
+		column1.setPreferredWidth(300);
+		column1 = table.getColumnModel().getColumn(5);
+		column1.setPreferredWidth(20);
+		column1 = table.getColumnModel().getColumn(6);
+		column1.setPreferredWidth(20);
 		
 		idField = new JTextField();
 		idField.setBounds(481, 32, 189, 20);
