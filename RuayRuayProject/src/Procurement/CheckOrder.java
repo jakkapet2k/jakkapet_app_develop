@@ -6,71 +6,167 @@ import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import Main.DAO;
 import Main.Main;
 import java.awt.Font;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+
+import Goods.Goods;
+
 import javax.swing.JButton;
 
-public class CheckOrder extends JPanel  {
+public class CheckOrder extends JPanel implements ActionListener  {
+	
+	
+	
+	public static final String Refresh_STR = "Refresh";
+	private static final String cancelString = "cancel";
+	private static final String ACCEPT = "Accept";
+	
+	
+	
 	private JTable table;
 	private JTextField idField;
 	private JTextField RecDateField;
-	
+	DefaultTableModel tableModel;
 	public CheckOrder(Main main) {
 		
 		
 		JLabel lblDeleteGoods = new JLabel("Check Order");
 		lblDeleteGoods.setFont(new Font("Quark", Font.BOLD, 20));
-		lblDeleteGoods.setBounds(411, 24,lblDeleteGoods.getPreferredSize().width,lblDeleteGoods.getPreferredSize().height);
+		lblDeleteGoods.setBounds(299, 22,lblDeleteGoods.getPreferredSize().width,lblDeleteGoods.getPreferredSize().height);
 		add(lblDeleteGoods);
-		setPreferredSize(new Dimension(900,400));
+		setPreferredSize(new Dimension(684, 486));
 		setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(143, 154, 629, 235);
+		scrollPane.setBounds(27, 165, 629, 294);
 		add(scrollPane);
 		
-		table = new JTable();
-		scrollPane.setViewportView(table);
-		
 		idField = new JTextField();
-		idField.setBounds(343, 64, 243, 20);
+		idField.setBounds(231, 62, 243, 20);
 		add(idField);
 		idField.setColumns(10);
 		
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				// TODO Auto-generated method stub
+				int row = table.getSelectedRow();
+				if (row >= 0 ) {
+					String id1 = tableModel.getValueAt(row, 0).toString();
+					idField.setText(id1);
+					System.out.println("--------------Start------------------");
+					System.out.println("ConsoleLog ID: " + id1);
+					System.out.println("---------------END-----------------");
+				}
+				
+				}
+				
+			});
+		
+		String[] columnNames = { "ID", "Supplier", "Goods", "Quantity", "Oreder Date","Receive Date" };
+		tableModel = new DefaultTableModel(columnNames, 0);
+
+		DAO.showTableCheckOrder(tableModel);
+		table.setModel(tableModel);
+
+
 		JLabel lbId = new JLabel("ID");
 		lbId.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbId.setBounds(307, 65, 34, 21);
+		lbId.setBounds(195, 63, 34, 21);
 		add(lbId);
 		
-		JButton btnNewButton = new JButton("Delete");
+		JButton btnNewButton = new JButton(ACCEPT);
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton.setForeground(new Color(165, 42, 42));
-		btnNewButton.setBounds(365, 120, 89, 23);
+		btnNewButton.setForeground(new Color(0, 100, 0));
+		btnNewButton.setBounds(208, 118, 89, 23);
 		add(btnNewButton);
 		
-		JButton btnCancle = new JButton("Cancle");
+		JButton btnCancle = new JButton(cancelString);
 		btnCancle.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnCancle.setBounds(464, 120, 89, 23);
+		btnCancle.setBounds(307, 118, 89, 23);
 		add(btnCancle);
 		
+		LocalDate ReceiveDate = LocalDate.now();
+		DateTimeFormatter formatRD = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String rd = ReceiveDate.format(formatRD);
 		RecDateField = new JTextField();
 		RecDateField.setColumns(10);
-		RecDateField.setBounds(343, 95, 243, 20);
+		RecDateField.setBounds(231, 93, 243, 20);
+		RecDateField.setText(rd);
 		add(RecDateField);
 		
+		
+		JButton btnRefresh = new JButton(Refresh_STR);
+		btnRefresh.setForeground(SystemColor.activeCaption);
+		btnRefresh.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnRefresh.setBounds(406, 118, 89, 23);
+		add(btnRefresh);
+		
+	    
 		JLabel lblReceive = new JLabel("Receive Date");
 		lblReceive.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblReceive.setBounds(223, 96, 118, 21);
+		lblReceive.setBounds(111, 94, 118, 21);
 		add(lblReceive);
 		
-		JLabel lbRecDate = new JLabel("*2022-10-15");
-		lbRecDate.setForeground(Color.RED);
-		lbRecDate.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lbRecDate.setBounds(611, 98, 120, 20);
-		add(lbRecDate);
+		btnNewButton.addActionListener(this);
+		btnCancle.addActionListener(this);
+		btnRefresh.addActionListener(this);
 
 	}
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		String command = evt.getActionCommand();
+		Object source = evt.getSource();
+		if (command.equals(ACCEPT)) {
+			System.out.println("actionCommand:" + ACCEPT);
+			try {
+				// retrieve values from text fields.
+				int id = Integer.parseInt(idField.getText());
+				String name = RecDateField.getText();
+
+				Check Update = new Check(id, name);
+				System.out.println("goods:" + Update.toString());
+				DAO.AcceptOrder(Update);
+				// reset text fields
+				idField.setText(null);
+
+				tableModel.setRowCount(0);
+				DAO.showTableCheckOrder(tableModel);
+				table.setModel(tableModel);
+			} catch (Exception ex) {
+				System.err.println("Error! Invalid data.");
+			}
+			// user presses "Cancel"
+		} else if (command.equals(cancelString)) {
+			System.out.println("actionCommand:" + cancelString);
+			setVisible(false);
+		} else if (command.equals(Refresh_STR)) {
+
+			tableModel.setRowCount(0);
+			DAO.showTableCheckOrder(tableModel);
+			table.setModel(tableModel);
+
+		}
+		
+	}
+	
+
+		
+
 }
