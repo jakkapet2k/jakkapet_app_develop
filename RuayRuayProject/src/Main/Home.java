@@ -5,10 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSetMetaData;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Vector;
+
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,8 +15,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import Goods.Goods;
-import Goods.GoodsDAO;
+
 
 public class Home extends JPanel implements ActionListener{
 	public static final String View_STR = "View Goods";
@@ -37,12 +33,12 @@ public class Home extends JPanel implements ActionListener{
 		
 		JLabel lblGoodsInfo = new JLabel("Goods Info");
 		lblGoodsInfo.setFont(new Font("Quark", Font.BOLD, 23));
-		lblGoodsInfo.setBounds(379, 32, 106,33);
+		lblGoodsInfo.setBounds(272, 42, 106,33);
 		this.add(lblGoodsInfo);
-		setPreferredSize(new Dimension(900,400));
+		setPreferredSize(new Dimension(684,486));
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(34, 63, 833, 309);
+		scrollPane.setBounds(10, 98, 664, 309);
 		add(scrollPane);
 		table = new JTable();
 		scrollPane.setViewportView(table);
@@ -52,7 +48,7 @@ public class Home extends JPanel implements ActionListener{
 		tableModel = new DefaultTableModel(columnNames, 0);
 
 		
-		GoodsDAO.showTable(tableModel);
+		DAO.showTableGoods(tableModel);
 		table.setModel(tableModel);
 
 		TableColumn column1 = table.getColumnModel().getColumn(0);
@@ -75,7 +71,7 @@ public class Home extends JPanel implements ActionListener{
 		JButton btnViewGoods = new JButton(View_STR);
 		btnViewGoods.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnViewGoods.setForeground(new Color(0, 191, 255));
-		btnViewGoods.setBounds(34, 39, 123, 23);
+		btnViewGoods.setBounds(10, 409, 123, 23);
 		add(btnViewGoods);
 		
 		btnViewGoods.addActionListener(this);
@@ -89,7 +85,10 @@ public class Home extends JPanel implements ActionListener{
 		
 		String command = evt.getActionCommand();
 		if(command.equals(View_STR)) {
-			GoodsDAO.showTable(tableModel);
+			
+			tableModel.setRowCount(0);
+			DAO.showTableGoods(tableModel);
+			table.setModel(tableModel);
 			
 			
 	}

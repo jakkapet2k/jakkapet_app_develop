@@ -11,7 +11,7 @@ public class Goods {
 
 	public Goods(int id, int lv3, int lv2, int lv1, String name, int unit_price, int stocks) {
 		this.id = id;
-		this.lv3 = lv3;
+		this.lv3= lv3;
 		this.lv2 = lv2;
 		this.lv1 = lv1;
 		this.name = name;
@@ -19,6 +19,27 @@ public class Goods {
 		this.stocks = stocks;
 	}
 	public String toString() {
-		return "id:" + id +", lv3:" + lv3 +", lv2:" + lv2 +", lv1:" + lv1 +", name:" + name+", unit_price:" + unit_price+", stocks:" + stocks;
+		return  name;
+	}
+	public int getid() {
+		return id;
+	}
+	public int getlv1() {
+		return lv1;
+	}
+	public int getlv2() {
+		return lv2;
+	}
+	public int getlv3() {
+		return lv3;
+	}
+	public String getName() {
+		return name;
+	}
+	public int getPrice() {
+		return unit_price;
+	}
+	public int getStocks() {
+		return stocks;
 	}
 }

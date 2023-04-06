@@ -14,6 +14,9 @@ import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.JScrollPane;
@@ -56,7 +59,7 @@ public class Order extends JPanel implements ActionListener {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 
-		String[] columnNames = { "ID", "Supplier", "Goods", "Quantity", "Oreder Date" };
+		String[] columnNames = { "ID", "Supplier", "Goods", "Quantity", "Oreder Date","Oreder Time" };
 		tableModel = new DefaultTableModel(columnNames, 0);
 
 		DAO.showTableOrder(tableModel);
@@ -155,12 +158,16 @@ public class Order extends JPanel implements ActionListener {
 			System.out.println("actionCommand:" + Order);
 			try {
 				// retrieve values from text fields.
+				
+				ZoneId zone = ZoneId.of("Asia/Bangkok");  
+			    ZonedDateTime currentTime = ZonedDateTime.now(zone);
+			    String formattedTime = currentTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 				int sup = id;
 				int goods =gid;
 				int qty = Integer.parseInt(qtyField.getText());
 				String ordate = ordateField.getText();
-
-				OrderCont Add = new OrderCont(0, sup, goods, qty, ordate);
+				String ortime = formattedTime;
+				OrderCont Add = new OrderCont(0, sup, goods, qty, ordate,ortime);
 				System.out.println("Order:" + Add.toString());
 				DAO.addOrder(Add);
 				// reset text fields
@@ -173,7 +180,8 @@ public class Order extends JPanel implements ActionListener {
 				DAO.showTableOrder(tableModel);
 				table.setModel(tableModel);
 			} catch (Exception ex) {
-				System.err.println("Error! Invalid data.");
+				
+				System.err.println("Error! Invalid data." );
 			}
 			
 			// user presses "Cancel"

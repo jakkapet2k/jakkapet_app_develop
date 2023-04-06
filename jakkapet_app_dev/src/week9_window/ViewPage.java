@@ -14,7 +14,7 @@ public class ViewPage extends JPanel {
 		setBackground(Color.orange);
 		
 		JLabel label = new JLabel("View Page");
-		label.setBounds(0, 0, label.getPreferredSize().width,label.getPreferredSize().height);
+		label.setBounds(73, 52, label.getPreferredSize().width,label.getPreferredSize().height);
 		add(label);
 		
 		

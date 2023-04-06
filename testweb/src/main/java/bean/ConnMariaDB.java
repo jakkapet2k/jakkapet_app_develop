@@ -1,14 +1,15 @@
-package Goods;
+package bean;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import java.util.Properties;
 
 public class ConnMariaDB {
 	public Connection getConnection() {
 
-		System.out.println("-------- MySQL DB JDBC Connection Testing ------");
+		System.out.println("-------- MySQL DB JDBC Connection Testing -------");
 
 		try {
 
@@ -16,7 +17,7 @@ public class ConnMariaDB {
 
 		} catch (ClassNotFoundException e) {
 
-			System.out.println("Where is your MySQL DB JDBC Driver?");
+			System.err.println("Where is your MySQL DB JDBC Driver?");
 			e.printStackTrace();
 		}
 
@@ -38,10 +39,18 @@ public class ConnMariaDB {
 		if (connection != null) {
 			System.out.println("You made it, take control your database now!");
 		} else {
-			System.out.println("Failed to make connection!");
+			System.err.println("Failed to make connection!");
 		}
 		
-		System.out.println("Connected to database");
+		System.out.println("-------------- Connected to database ------------\n");
+//		  LocalTime time = LocalTime.now();
+//		StopWatch watch = new StopWatch();
+//		System.err.println("------------------------------");
+//		System.err.println("Connected to database");
+//		System.err.println("------------------------------");
+		
 		return connection;
+		
+		
 	}
 }

@@ -13,6 +13,8 @@ import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.JScrollPane;
@@ -79,7 +81,7 @@ public class CheckOrder extends JPanel implements ActionListener  {
 				
 			});
 		
-		String[] columnNames = { "ID", "Supplier", "Goods", "Quantity", "Oreder Date","Receive Date" };
+		String[] columnNames = { "ID", "Supplier", "Goods", "Quantity", "Oreder Date","Receive Date","Receive Time" };
 		tableModel = new DefaultTableModel(columnNames, 0);
 
 		DAO.showTableCheckOrder(tableModel);
@@ -137,10 +139,14 @@ public class CheckOrder extends JPanel implements ActionListener  {
 			System.out.println("actionCommand:" + ACCEPT);
 			try {
 				// retrieve values from text fields.
+				
+				ZoneId zone = ZoneId.of("Asia/Bangkok");  
+			    ZonedDateTime currentTime = ZonedDateTime.now(zone);
+			    String formattedTime = currentTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 				int id = Integer.parseInt(idField.getText());
 				String name = RecDateField.getText();
 
-				Check Update = new Check(id, name);
+				Check Update = new Check(id, name,formattedTime);
 				System.out.println("goods:" + Update.toString());
 				DAO.AcceptOrder(Update);
 				// reset text fields

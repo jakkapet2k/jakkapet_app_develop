@@ -1,0 +1,22 @@
+body{
+    background-color: aliceblue;
+}
+.p_out{
+    height:90vh; 
+    overflow:hidden;
+}
+
+.p_in{
+    overflow:hidden; 
+    width:50vw; 
+    height:50vh;
+    /* border: 2px solid black; */
+    background-color:rgb(255, 255, 255);
+    border-radius: 35px;
+    box-shadow: 0px 6px 5px 1px rgba(0,0,0,0.3);
+
+    
+}
+.ProductName{
+    width: 300px;
+}

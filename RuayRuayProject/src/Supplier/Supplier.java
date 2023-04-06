@@ -1,11 +1,11 @@
 package Supplier;
 
 public class Supplier {
-	int id;
-	String name;
-	String address;
-	String province;
-	String phone;
+	public int id;
+	public String name;
+	public String address;
+	public String province;
+	public String phone;
 	public Supplier(int id, String name, String address, String province, String phone) {
 		this.id = id;
 		this.name = name;
