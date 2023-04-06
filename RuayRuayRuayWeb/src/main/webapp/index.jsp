@@ -58,7 +58,7 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th scope="col">ID</th>
+					<th scope="col">No:</th>
 					<th scope="col">Catagory 1</th>
 					<th scope="col">Catagory 2</th>
 					<th scope="col">Catagory 3</th>
@@ -84,7 +84,7 @@
 					<td><%=g.getPrice()%></td>
 					<td><%=g.getStocks()%></td>
 					<td><a
-						href="purchase.jsp?id=<%=g.getid()%>&Name=<%=g.getName()%>&Unit_Price=<%=g.getPrice()%>"><button
+						href="dtail.jsp?id=<%=g.getid()%>&Name=<%=g.getName()%>&Unit_Price=<%=g.getPrice()%>"><button
 								class="btn btn-outline-dark">Purchase</button></a></td>
 				</tr>
 				<%

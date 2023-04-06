@@ -16,9 +16,7 @@ if (status) {
 	out.println("You r successfully logged in");
 	session.setAttribute("session", "TRUE");
 } else {
-	out.print("Sorry, email or password error");
-%>
-<jsp:include page="index.jsp"></jsp:include>
-<%
+	request.getRequestDispatcher("index.jsp").forward(request, response);
+
 }
 %>

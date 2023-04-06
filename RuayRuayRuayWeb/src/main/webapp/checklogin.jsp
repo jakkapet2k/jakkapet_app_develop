@@ -10,12 +10,14 @@
 UserLogin login = new UserLogin(user, pass);
 boolean status = DAOController.validate(login);
 if (status) {
-	//session.setAttribute("session", "TRUE");
+	int id = login.getId();
+	//out.print(id);
 	session.setAttribute("loginSession", true);
 	session.setAttribute("user", user);
+	session.setAttribute("CID", id);
 	response.sendRedirect("Store.jsp");
 } else {
 	response.sendRedirect("login.jsp");
-
+	//out.print("Error");
 }
 %>

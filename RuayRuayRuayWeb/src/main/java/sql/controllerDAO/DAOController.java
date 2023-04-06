@@ -4,11 +4,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.constructor.Goods;
+import com.constructor.MonthYear;
+import com.constructor.Purchase;
 import com.constructor.SaleReport;
 import com.constructor.UserLogin;
+
 
 
 public class DAOController {
@@ -29,12 +37,17 @@ public class DAOController {
 
 			while (rs.next()) {
 
-				
+				rs.getInt("id");
 				rs.getString("username");
 				rs.getString("password");
 				
+				bean.setId(rs.getInt("id"));
+				
+				System.out.println("idOutput : "+rs.getString("id"));
 				System.out.println("userOutput : "+rs.getString("username"));
 				System.out.println("passOutput : "+rs.getString("password"));
+				
+				
 				
 				if(rs.getString("username")!=null || rs.getString("username")!= null && rs.getString("username")== bean.pass) {
 					status = true;
@@ -137,28 +150,96 @@ public class DAOController {
 		return list;
 
 	}
+	
+	
+	
 
-	public static void StickGoodsUpdate(Goods goods) {
+
+	public static List<SaleReport> getAnalisysSelected(MonthYear my) {
+		List<SaleReport> list = new ArrayList<SaleReport>();
 
 		try {
-			String EditSql = "UPDATE goods,tran SET goods.stocks = goods.stocks - trans.qty WHERE goods.id = pcm.gid ";
-			System.out.println("insertSql:" + EditSql);
+			ConnMariaDB connDB = new ConnMariaDB();
+			Connection con = connDB.getConnection();
+			;
+
+			String query = "SELECT trans.id,trans.ordate,trans.time,customer.username,goods.name,goods.unit_price,trans.qty,goods.unit_price*trans.qty AS total_price FROM trans LEFT JOIN customer ON trans.cid=customer.id LEFT JOIN goods ON trans.gid=goods.id WHERE ordate LIKE '%"+my.my+"%' ORDER BY trans.ordate";
+
+			Statement st = con.createStatement();
+
+			ResultSet rs = st.executeQuery(query);
+
+			while (rs.next()) {
+
+				int id = rs.getInt("id");
+				String ordate = rs.getString("ordate");
+				String time = rs.getString("time");
+				String cust = rs.getString("username");
+				String name = rs.getString("name");
+				String qty = rs.getString("qty");
+				String tp = rs.getString("total_price");
+
+				SaleReport sp = new SaleReport(id, ordate, time, cust, name, qty, tp);
+
+				list.add(sp);
+				
+				
+
+			}
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+
+		return list;
+
+	}
+	
+	
+	
+	
+	
+	public static void AddSalesAndUpdateStock(Purchase purchase) {
+		
+		try {
+			
+			LocalDate ReceiveDate = LocalDate.now();
+			DateTimeFormatter formatRD = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			String ordate = ReceiveDate.format(formatRD);
+	
+	
+			ZoneId zone = ZoneId.of("Asia/Bangkok");  
+    		ZonedDateTime currentTime = ZonedDateTime.now(zone);
+			String time = currentTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+			
+			
+			String insertSql = "INSERT INTO trans  (ordate,time,cid,gid,qty)  VALUES" + "('"+ordate + "','" + time+ "'," + purchase.cid+ ","+purchase.gid+","+purchase.qty+")";
+			System.out.println("insertSql:" + insertSql);
+			String UpdateSql = "UPDATE goods,trans SET goods.stocks = goods.stocks - trans.qty WHERE goods.id = trans.gid ORDER BY trans.id DESC LIMIT 1 ";
+			
+
 
 			ConnMariaDB connDB = new ConnMariaDB();
 			Connection con = connDB.getConnection();
-
+			
 			Statement stmnt = null;
 			if (con != null) {
 				stmnt = con.createStatement();
-				stmnt.execute(EditSql);
+				stmnt.execute(insertSql);
+				stmnt.execute(UpdateSql);
 				stmnt.close();
 				con.close();
-				System.out.println("Goods Edited successfully.");
+				System.out.println("Goods added successfully.");
 			}
 		} catch (Exception e) {
 			System.err.println("Got an exception! ");
 			System.err.println(e.getMessage());
 		}
 	}
+	
+	
+	
+	
+	
+
 
 }

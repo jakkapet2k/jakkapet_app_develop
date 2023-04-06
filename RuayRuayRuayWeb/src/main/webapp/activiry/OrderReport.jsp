@@ -33,7 +33,7 @@
               <a class="nav-link" href="BalanceReport.jsp">BalanceReport</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="Analisys">Analisys</a>
+              <a class="nav-link" href="Analisys.jsp">Analisys</a>
             </li>
             
           </ul>
