@@ -28,10 +28,10 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav">
             <li class="nav-item active">
-              <a class="nav-link" href="index.jsp">Store</span></a>
+              <a class="nav-link" href="Store.jsp">Store</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="Analisys">Analisys</a>
+              <a class="nav-link" href="activity/Analisys.jsp">Analisys</a>
             </li>
             
           </ul>

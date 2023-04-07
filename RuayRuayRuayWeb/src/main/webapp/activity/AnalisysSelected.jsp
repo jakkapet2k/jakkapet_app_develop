@@ -1,6 +1,4 @@
- <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-	<%@page
+<%@page
 	import="sql.controllerDAO.DAOController,com.constructor.*,java.util.*,java.time.*,java.time.format.DateTimeFormatter"%> 
 <!DOCTYPE html>
 <html>
@@ -11,7 +9,8 @@
 	rel="stylesheet"
 	integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"
 	crossorigin="anonymous">
-<title>Insert title here</title>
+	<link rel="stylesheet" href="style.css">
+<title>Analisys</title>
 </head>
 <body>
 
@@ -24,7 +23,7 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav">
             <li class="nav-item active">
-              <a class="nav-link" href="../index.jsp">Store</span></a>
+              <a class="nav-link" href="../Store.jsp">Store</span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="OrderReport.jsp">OrderReport</a>
@@ -41,7 +40,19 @@
             
           </ul>
         </div>
-        </div>
+        <div class=" mb-3 row">
+				<%
+				String username = (String) session.getAttribute("user");
+		         
+				%>
+				<h5 class="col-sm-5 col-form-label text-white ">Products Name :
+				</h5>
+				<div class="col-sm-5">
+					<input type="text" class="form-control-plaintext text-white"
+						id="user" name="user" value="<%=username%>">
+				</div>
+			</div>
+		</div>
       </nav>
 
 
@@ -51,32 +62,21 @@
 		<br> <br> <br>
 	</center>
 
-	<div class="d-flex justify-content-evenly">
 
-		<div class="p-2 card">
-			<h3>Order : 32</H3>
-		</div>
-		<div class="p-2 card">
-			<h3>Products : 13</h3>
-		</div>
-		<div class="p-2 card">
-			<h3>Quantity : 64</h3>
-		</div>
-
-		<div class="p-2 card">
-			<h3>Total income : 1951658</h3>
-		</div>
-	</div>
-
+		
+		<%String My = request.getParameter("yymm"); 
+		MonthYear my =new MonthYear(My);
+		
+		%>
 <div class="container mt-5">
 	<form action="AnalisysSelected.jsp">
 		<div class="col-sm-5 d-flex ">
-			<input type="month" class="form-control mx-3" id="yymm" name="yymm">
-			<input type="submit" class=" btn btn-outline-dark" >
+			<input type="month" class="form-control mx-3" id="yymm" name="yymm" value="">
+			<input type="reset" class="col-sm-2 mx-3 btn btn-outline-dark" >
+			<a href="Analisys.jsp" class=" btn btn-outline-dark">Show all</a>
 		</div>
-	
-		
 	</form>
+	
 	<table class="table mt-5">
 		<thead>
 			<tr>
@@ -93,10 +93,10 @@
 			<tr>
 
 				<%
-					List<SaleReport> list = DAOController.getSalesReport();
+				
+					List<Analisys> list = DAOController.getAnalisysSelected(my);
 
-					for (SaleReport sp : list) {
-
+					for (Analisys sp : list) {
 					%>
 					<td><%=sp.getfor()%></td>
 					<td><%=sp.getordate()%></td>

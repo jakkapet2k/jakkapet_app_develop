@@ -2,7 +2,7 @@ package com.constructor;
 
 
 
-public class SaleReport {
+public class Analisys {
 	public 	int id;
 	public  String ordate;
 	public  String time;
@@ -11,7 +11,7 @@ public class SaleReport {
 	public  String qty;
 	public  String tp;
 
-	public SaleReport(int id, String ordate, String time, String username, String name, String qty, String tp) {
+	public Analisys(int id, String ordate, String time, String username, String name, String qty, String tp) {
 		this.id = id;
 		this.ordate= ordate;
 		this.time = time;
@@ -74,12 +74,5 @@ public class SaleReport {
 	}
 
 
-
-
-
-	
-	
-
-	
 	
 }

@@ -14,7 +14,7 @@
 	integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"
 	crossorigin="anonymous">
 <link rel="stylesheet" href="style.css">
-<title>Insert title here</title>
+<title>Thank You </title>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -28,8 +28,8 @@
 			<div class="collapse navbar-collapse" id="navbarNavDropdown">
 				<ul class="navbar-nav">
 					<li class="nav-item active"><a class="nav-link"
-						href="index.jsp">Store</span></a></li>
-					<li class="nav-item"><a class="nav-link" href="Analisys">Analisys</a>
+						href="Store.jsp">Store</span></a></li>
+					<li class="nav-item"><a class="nav-link" href=activity/Analisys.jsp>Analisys</a>
 					</li>
 
 				</ul>

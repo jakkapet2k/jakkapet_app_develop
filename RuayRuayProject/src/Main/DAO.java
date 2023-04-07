@@ -257,7 +257,7 @@ public static void DeleteSupplier(Supplier sp) {
 	public static void addOrder(OrderCont order) {
 
 		try {
-			String insertSql = "INSERT INTO pcm (supid,gid,qty,ordate,ortime,rcdate,rctime) VALUES ("+order.supplier+","+order.gid+","+order.quantity+",'"+order.orderdate+"','"+order.ordertime+"','not received yet!!','00:00:00')";
+			String insertSql = "INSERT INTO pcm (supid,gid,qty,ordate,ortime,rcdate,rctime) VALUES ("+order.supplier+","+order.gid+","+order.quantity+",'"+order.orderdate+"','"+order.ordertime+"','Not Date!!','00:00:00')";
 			System.out.println("insertSql:" + insertSql);
 
 			ConnMariaDB connDB = new ConnMariaDB();

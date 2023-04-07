@@ -28,14 +28,7 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNavDropdown">
-				<ul class="navbar-nav">
-					<li class="nav-item active"><a class="nav-link"
-						href="index.jsp">Store</span></a></li>
-					<li class="nav-item"><a class="nav-link" href="Analisys">Analisys</a>
-					</li>
-
-				</ul>
-			
+				
 			</div>
 			
 			<a href="login.jsp" class="text-end btn btn-outline-light">Login</a>
@@ -84,7 +77,7 @@
 					<td><%=g.getPrice()%></td>
 					<td><%=g.getStocks()%></td>
 					<td><a
-						href="dtail.jsp?id=<%=g.getid()%>&Name=<%=g.getName()%>&Unit_Price=<%=g.getPrice()%>"><button
+						href="login.jsp"><button
 								class="btn btn-outline-dark">Purchase</button></a></td>
 				</tr>
 				<%

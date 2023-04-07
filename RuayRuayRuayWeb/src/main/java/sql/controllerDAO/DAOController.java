@@ -11,23 +11,21 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.constructor.Analisys;
 import com.constructor.Goods;
 import com.constructor.MonthYear;
+import com.constructor.OrderCont;
 import com.constructor.Purchase;
-import com.constructor.SaleReport;
+import com.constructor.SealesReport;
 import com.constructor.UserLogin;
-
-
 
 public class DAOController {
 
-	
-	
 	public static boolean validate(UserLogin bean) {
-		boolean status = false ;
+		boolean status = false;
 		try {
-			System.out.println("userInput : "+bean.user);
-			System.out.println("passInput : "+bean.pass);
+			System.out.println("userInput : " + bean.user);
+			System.out.println("passInput : " + bean.pass);
 
 			ConnMariaDB connDB = new ConnMariaDB();
 			Connection con = connDB.getConnection();
@@ -40,26 +38,24 @@ public class DAOController {
 				rs.getInt("id");
 				rs.getString("username");
 				rs.getString("password");
-				
+
 				bean.setId(rs.getInt("id"));
-				
-				System.out.println("idOutput : "+rs.getString("id"));
-				System.out.println("userOutput : "+rs.getString("username"));
-				System.out.println("passOutput : "+rs.getString("password"));
-				
-				
-				
-				if(rs.getString("username")!=null || rs.getString("username")!= null && rs.getString("username")== bean.pass) {
+
+				System.out.println("idOutput : " + rs.getString("id"));
+				System.out.println("userOutput : " + rs.getString("username"));
+				System.out.println("passOutput : " + rs.getString("password"));
+
+				if (rs.getString("username") != null
+						|| rs.getString("username") != null && rs.getString("username") == bean.pass) {
 					status = true;
-					System.out.println("status : "+status);
-				}else {
+					System.out.println("status : " + status);
+				} else {
 					status = false;
-					System.out.println("status : "+status);
+					System.out.println("status : " + status);
 				}
-				
 
 			}
-		
+
 			st.close();
 			rs.close();
 			con.close();
@@ -69,13 +65,6 @@ public class DAOController {
 		}
 		return status;
 	}
-	
-	
-	
-	
-	
-	
-	
 
 	public static List<Goods> getGoods() {
 		List<Goods> list = new ArrayList<Goods>();
@@ -89,9 +78,6 @@ public class DAOController {
 					"SELECT goods.id,c_l1.nameL1,c_l2.nameL2,c_l3.nameL3,goods.name,goods.unit_price,goods.stocks FROM goods LEFT JOIN c_l1 ON goods.lv1=c_l1.id LEFT JOIN c_l2 ON goods.lv2=c_l2.id LEFT JOIN c_l3 ON goods.lv3=c_l3.id");
 			ResultSet rs = ps.executeQuery();
 
-			
-			
-			
 			while (rs.next()) {
 
 				int id = rs.getInt("id");
@@ -114,15 +100,87 @@ public class DAOController {
 
 	}
 
-	public static List<SaleReport> getSalesReport() {
-		List<SaleReport> list = new ArrayList<SaleReport>();
+	public static List<SealesReport> getSalesReport() {
+		List<SealesReport> list = new ArrayList<SealesReport>();
 
 		try {
 			ConnMariaDB connDB = new ConnMariaDB();
 			Connection con = connDB.getConnection();
 			;
 
-			String query = "SELECT trans.id,trans.ordate,trans.time,customer.username,goods.name,goods.unit_price,trans.qty,goods.unit_price*trans.qty AS total_price FROM trans LEFT JOIN customer ON trans.cid=customer.id LEFT JOIN goods ON trans.gid=goods.id ORDER BY trans.ordate ";
+			String query = "SELECT year(ordate)AS year ,date_format(ordate,'%M') AS month ,SUM(qty) AS totalSales FROM trans group by year(ordate),month(ordate) order by year(ordate),month(ordate)";
+
+			Statement st = con.createStatement();
+
+			ResultSet rs = st.executeQuery(query);
+			int i = 0;
+			while (rs.next()) {
+				String year = rs.getString("year");
+				String month = rs.getString("month");
+				String totalSales = rs.getString("totalSales");
+				i++;
+
+				SealesReport sp = new SealesReport(year, month, totalSales, i);
+
+				list.add(sp);
+
+			}
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+
+		return list;
+
+	}
+
+	public static List<OrderCont> getOrderReport() {
+		List<OrderCont> list = new ArrayList<OrderCont>();
+
+		try {
+			ConnMariaDB connDB = new ConnMariaDB();
+			Connection con = connDB.getConnection();
+			;
+
+			String query = "SELECT pcm.id,ordate,ortime,supplier.sup,goods.name,goods.unit_price,qty, goods.unit_price*qty AS total_price  FROM pcm INNER JOIN supplier ON supplier.id= pcm.supid INNER JOIN goods ON goods.id= pcm.gid";
+
+			Statement st = con.createStatement();
+
+			ResultSet rs = st.executeQuery(query);
+			int i = 0;
+			while (rs.next()) {
+
+				String ordate = rs.getString("ordate");
+				String ortime = rs.getString("ortime");
+				String sup = rs.getString("sup");
+				String goods = rs.getString("name");
+				String qty = rs.getString("qty");
+				String tp = rs.getString("total_price");
+				
+				i++;
+				
+				OrderCont sp = new OrderCont(sup,goods,qty,ordate,ortime,tp,i);
+
+				list.add(sp);
+
+			}
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+
+		return list;
+
+	}
+
+	public static List<Analisys> getAnalisysSelected(MonthYear my) {
+		List<Analisys> list = new ArrayList<Analisys>();
+
+		try {
+			ConnMariaDB connDB = new ConnMariaDB();
+			Connection con = connDB.getConnection();
+			;
+
+			String query = "SELECT trans.id,trans.ordate,trans.time,customer.username,goods.name,goods.unit_price,trans.qty,goods.unit_price*trans.qty AS total_price FROM trans LEFT JOIN customer ON trans.cid=customer.id LEFT JOIN goods ON trans.gid=goods.id WHERE ordate LIKE '%"
+					+ my.my + "%' ORDER BY trans.ordate";
 
 			Statement st = con.createStatement();
 
@@ -138,7 +196,7 @@ public class DAOController {
 				String qty = rs.getString("qty");
 				String tp = rs.getString("total_price");
 
-				SaleReport sp = new SaleReport(id, ordate, time, cust, name, qty, tp);
+				Analisys sp = new Analisys(id, ordate, time, cust, name, qty, tp);
 
 				list.add(sp);
 
@@ -150,77 +208,27 @@ public class DAOController {
 		return list;
 
 	}
-	
-	
-	
 
-
-	public static List<SaleReport> getAnalisysSelected(MonthYear my) {
-		List<SaleReport> list = new ArrayList<SaleReport>();
-
-		try {
-			ConnMariaDB connDB = new ConnMariaDB();
-			Connection con = connDB.getConnection();
-			;
-
-			String query = "SELECT trans.id,trans.ordate,trans.time,customer.username,goods.name,goods.unit_price,trans.qty,goods.unit_price*trans.qty AS total_price FROM trans LEFT JOIN customer ON trans.cid=customer.id LEFT JOIN goods ON trans.gid=goods.id WHERE ordate LIKE '%"+my.my+"%' ORDER BY trans.ordate";
-
-			Statement st = con.createStatement();
-
-			ResultSet rs = st.executeQuery(query);
-
-			while (rs.next()) {
-
-				int id = rs.getInt("id");
-				String ordate = rs.getString("ordate");
-				String time = rs.getString("time");
-				String cust = rs.getString("username");
-				String name = rs.getString("name");
-				String qty = rs.getString("qty");
-				String tp = rs.getString("total_price");
-
-				SaleReport sp = new SaleReport(id, ordate, time, cust, name, qty, tp);
-
-				list.add(sp);
-				
-				
-
-			}
-		} catch (Exception e) {
-			System.err.println(e);
-		}
-
-		return list;
-
-	}
-	
-	
-	
-	
-	
 	public static void AddSalesAndUpdateStock(Purchase purchase) {
-		
+
 		try {
-			
+
 			LocalDate ReceiveDate = LocalDate.now();
 			DateTimeFormatter formatRD = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			String ordate = ReceiveDate.format(formatRD);
-	
-	
-			ZoneId zone = ZoneId.of("Asia/Bangkok");  
-    		ZonedDateTime currentTime = ZonedDateTime.now(zone);
+
+			ZoneId zone = ZoneId.of("Asia/Bangkok");
+			ZonedDateTime currentTime = ZonedDateTime.now(zone);
 			String time = currentTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-			
-			
-			String insertSql = "INSERT INTO trans  (ordate,time,cid,gid,qty)  VALUES" + "('"+ordate + "','" + time+ "'," + purchase.cid+ ","+purchase.gid+","+purchase.qty+")";
+
+			String insertSql = "INSERT INTO trans  (ordate,time,cid,gid,qty)  VALUES" + "('" + ordate + "','" + time
+					+ "'," + purchase.cid + "," + purchase.gid + "," + purchase.qty + ")";
 			System.out.println("insertSql:" + insertSql);
 			String UpdateSql = "UPDATE goods,trans SET goods.stocks = goods.stocks - trans.qty WHERE goods.id = trans.gid ORDER BY trans.id DESC LIMIT 1 ";
-			
-
 
 			ConnMariaDB connDB = new ConnMariaDB();
 			Connection con = connDB.getConnection();
-			
+
 			Statement stmnt = null;
 			if (con != null) {
 				stmnt = con.createStatement();
@@ -235,11 +243,5 @@ public class DAOController {
 			System.err.println(e.getMessage());
 		}
 	}
-	
-	
-	
-	
-	
-
 
 }
